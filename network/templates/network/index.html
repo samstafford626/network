@@ -1,0 +1,28 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h1>New Post</h1>
+    <form action="{% url 'new_post' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit">
+    </form>
+
+    <h1>Posts</h1>
+    {% for post in posts %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.user }}</h5>
+                <p class="card-text">{{ post.content }}</p>
+                <p class="card-text">{{ post.timestamp }}</p>
+                <span class="card-text">likes: {{ post.likes_count }}</span>
+                <form action="{% url 'remove_post' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    <button class="btn btn-primary">Delete</button>
+                </form>
+                
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
